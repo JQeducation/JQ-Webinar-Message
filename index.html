@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
+    <title>Debug Mode</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
-    <p style="text-align: center; margin-top: 50px;">Loading...</p>
+    <p style="text-align: center; margin-top: 50px;">Debugging...</p>
 
     <script>
         const MyLiffId = '2009018332-wywdUELq';
@@ -18,21 +18,27 @@
                 await liff.init({ liffId: MyLiffId });
                 
                 if (!liff.isLoggedIn()) {
+                    alert('Status: Not logged in. Logging in...');
                     liff.login();
                     return;
                 }
 
                 const profile = await liff.getProfile();
                 const userId = profile.userId;
-                const displayName = profile.displayName;
+                
+                // Show User ID for debugging
+                alert('Success! User ID: ' + userId);
 
-                const redirectUrl = `${WebinarUrl}?line_user_id=${userId}&nickname=${encodeURIComponent(displayName)}`;
+                const redirectUrl = `${WebinarUrl}?line_user_id=${userId}&nickname=${encodeURIComponent(profile.displayName)}`;
+                
+                // Show URL for debugging
+                alert('Redirecting to: ' + redirectUrl);
 
                 window.location.replace(redirectUrl);
 
             } catch (err) {
-                console.error('LIFF Error', err);
-                window.location.replace(WebinarUrl);
+                alert('Error: ' + err);
+                alert('Error Code: ' + err.code);
             }
         }
 
