@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debug Mode</title>
+    <title>Loading...</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f5f5f5; }
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
-    <p style="text-align: center; margin-top: 50px;">Debugging...</p>
+    <div class="loader"></div>
 
     <script>
         const MyLiffId = '2009018332-wywdUELq';
@@ -18,27 +23,20 @@
                 await liff.init({ liffId: MyLiffId });
                 
                 if (!liff.isLoggedIn()) {
-                    alert('Status: Not logged in. Logging in...');
                     liff.login();
                     return;
                 }
 
                 const profile = await liff.getProfile();
                 const userId = profile.userId;
-                
-                // Show User ID for debugging
-                alert('Success! User ID: ' + userId);
+                const displayName = profile.displayName;
 
-                const redirectUrl = `${WebinarUrl}?line_user_id=${userId}&nickname=${encodeURIComponent(profile.displayName)}`;
+                const redirectUrl = `${WebinarUrl}?line_user_id=${userId}&nickname=${encodeURIComponent(displayName)}`;
                 
-                // Show URL for debugging
-                alert('Redirecting to: ' + redirectUrl);
-
                 window.location.replace(redirectUrl);
 
             } catch (err) {
-                alert('Error: ' + err);
-                alert('Error Code: ' + err.code);
+                window.location.replace(WebinarUrl);
             }
         }
 
